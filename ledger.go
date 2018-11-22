@@ -19,11 +19,11 @@ func NewLedger(filepath string) *Ledger {
 	}
 }
 
-func (l *Ledger) CreateWithGenesisBlock() error {
-	_, err := os.Stat(l.Filepath)
+func (self *Ledger) CreateWithGenesisBlock() error {
+	_, err := os.Stat(self.Filepath)
 
 	if os.IsNotExist(err) {
-		file, err := os.Create(l.Filepath)
+		file, err := os.Create(self.Filepath)
 		if err != nil {
 			return err
 		}
@@ -35,7 +35,7 @@ func (l *Ledger) CreateWithGenesisBlock() error {
 			return err
 		}
 
-		err = l.AddBlock(block)
+		err = self.AddBlock(block)
 		if err != nil {
 			return err
 		}
@@ -44,14 +44,14 @@ func (l *Ledger) CreateWithGenesisBlock() error {
 	return nil
 }
 
-func (l *Ledger) CreateEmpty() error {
-	_, err := os.Stat(l.Filepath)
+func (self *Ledger) CreateEmpty() error {
+	_, err := os.Stat(self.Filepath)
 
 	if !os.IsNotExist(err) {
-		os.Remove(l.Filepath)
+		os.Remove(self.Filepath)
 	}
 
-	file, err := os.Create(l.Filepath)
+	file, err := os.Create(self.Filepath)
 	if err != nil {
 		return err
 	}
@@ -61,8 +61,8 @@ func (l *Ledger) CreateEmpty() error {
 	return nil
 }
 
-func (l *Ledger) AddBlock(block *Block) error {
-	var file, err = os.OpenFile(l.Filepath, os.O_APPEND|os.O_WRONLY, 0600)
+func (self *Ledger) AddBlock(block *Block) error {
+	var file, err = os.OpenFile(self.Filepath, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		return err
 	}
@@ -87,10 +87,10 @@ func (l *Ledger) AddBlock(block *Block) error {
 	return nil
 }
 
-func (l *Ledger) GetAllBlocks() ([]string, error) {
+func (self *Ledger) GetAllBlocks() ([]string, error) {
 	var list []string
 
-	file, err := os.Open(l.Filepath)
+	file, err := os.Open(self.Filepath)
 	if err != nil {
 		return list, err
 	}
@@ -110,10 +110,10 @@ func (l *Ledger) GetAllBlocks() ([]string, error) {
 	return list, nil
 }
 
-func (l *Ledger) GetLastBlock() (*Block, error) {
+func (self *Ledger) GetLastBlock() (*Block, error) {
 	var block Block
 
-	list, err := l.GetAllBlocks()
+	list, err := self.GetAllBlocks()
 	if err != nil {
 		return &block, err
 	}
@@ -123,8 +123,8 @@ func (l *Ledger) GetLastBlock() (*Block, error) {
 	return &block, nil
 }
 
-func (l *Ledger) NextBlock(data Data) (*Block, error) {
-	previousBlock, err := l.GetLastBlock()
+func (self *Ledger) NextBlock(data Data) (*Block, error) {
+	previousBlock, err := self.GetLastBlock()
 	if err != nil {
 		return &Block{}, err
 	}

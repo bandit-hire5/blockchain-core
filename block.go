@@ -13,7 +13,6 @@ type Block struct {
 	PreviousHash string
 	Timestamp    string
 	Data         Data
-	// ...
 }
 
 type Data struct {
